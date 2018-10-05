@@ -1,0 +1,110 @@
+<html>
+
+	<head>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var rowNum = 1;
+				
+				//add new row on add button click
+		        $(".add").click(function(){
+					rowNum++;
+		            var markup = "<tr><td style='text-align:right'><label id='slno"+rowNum+"' style='width:50px'>"+rowNum+"&nbsp;</label><input type='hidden' name='no[]' id='no"+rowNum+"' value='"+rowNum+"' /></td><td><input type='text' name='item[]' id='item"+rowNum+"' style='width:180px; text-align:right'/></td><td><input type='text' name='rate[]' id='rate"+rowNum+"' style='width:120px; text-align:right'/></td><td><input type='text' name='tax[]' id='tax"+rowNum+"' style='width:120px; text-align:right'/></td><td><input type='text' name='cgst[]' id='cgst"+rowNum+"' style='width:120px; text-align:right'/></td><td><input type='text' name='sgst[]' id='sgst"+rowNum+"' style='width:120px; text-align:right'/></td><td><input type='text' name='igst[]' id='igst"+rowNum+"' style='width:120px; text-align:right'/></td><td style='padding-left:10px'><input type='checkbox' name='check[]' id='check"+rowNum+"'></td></tr>";
+		            $("#tb").append(markup);
+		        });
+				
+				//remove the particular row on remove button click
+				$(document).on('click', '.remove', function(){
+					//check if any checkbox is selected
+					//perform deletion only if atleast one checkbox is selected
+					var checkedNum = $('input[name="check[]"]:checked').length;
+		        	var cfm = false;
+		        	if(checkedNum != 0){
+		        		cfm = confirm('Are you sure to delete '+checkedNum+' row(s)??');
+		        	} else {
+		        		alert('Please select atleast 1 entry');
+		        	}
+					
+					if(cfm == true){
+						$("#tb").find('input[name="check[]"]').each(function(){
+							if($(this).is(":checked")){
+								var idName = $(this).attr('id');		//finding id of the element
+								
+								$(this).parents("tr").remove();		//remove that row
+								
+								var rowCount = $('#tb tr').length;
+
+								var str = "Hello world!";
+								var res = str.substring(1, 4);
+								
+								var rmId = idName.substring(5, idName.length);
+								
+								//on removing a row decrement id of rows below it by 1
+								for(var i = rmId; i < rowCount; i++){
+									chId = parseInt(i)+1;
+									$('#slno'+chId).html(i+'&nbsp;');
+									$('#slno'+chId).attr('id', 'slno'+i);
+									$('#no'+chId).val(i);
+									$('#no'+chId).attr('id', 'no'+i);
+									$('#item'+chId).attr('id', 'item'+i);
+									$('#rate'+chId).attr('id', 'rate'+i);
+									$('#tax'+chId).attr('id', 'tax'+i);
+									$('#cgst'+chId).attr('id', 'cgst'+i);
+									$('#sgst'+chId).attr('id', 'sgst'+i);
+									$('#igst'+chId).attr('id', 'igst'+i);
+									$('#check'+chId).attr('id', 'check'+i);
+								}
+								
+								rowNum--;
+							}
+						});
+					}
+				});
+				
+			});
+		</script>
+
+	</head>
+
+	<body>
+		<form>
+        	<table border="1">
+                    <tbody id="tb">
+                        <tr height="50px">
+                            <th style="text-align:right; width:51px;">Sl No.&nbsp;</th>
+                            <th style="width:181px;">&nbsp;Item</th>
+                            <th style="text-align:right; width:121px;">Rate&nbsp;</th>
+                            <th style="text-align:right; width:121px;">Tax&nbsp;</th>
+                            <th style="text-align:right; width:121px;">CGST&nbsp;</th>
+                            <th style="text-align:right; width:121px;">SGST&nbsp;</th>
+                            <th style="text-align:right; width:121px;">IGST&nbsp;</th>
+                            <th style="border:none; width:50px;">
+                            	&nbsp;<a class="add" style="color:green">+</a><br/>
+                                &nbsp;<a class="remove" style="color:red">-</a>
+                            </th>
+                        </tr>
+                        <tr>
+                        	<td style='text-align:right;'>
+                            	<label style='width:50px'>1&nbsp;</label>
+                                <input type="hidden" name="no[]" value="1" />
+                            </td>
+                            <td><input type='text' name='item[]' id='item1' style='width:180px; text-align:right' /></td>
+                            <td><input type='text' name='rate[]' id='rate1' style='width:120px; text-align:right' /></td>
+                            <td><input type='text' name='tax[]' id='tax1' style='width:120px; text-align:right' /></td>
+                            <td><input type='text' name='cgst[]' id='cgst1' style='width:120px; text-align:right' /></td>
+                            <td><input type='text' name='sgst[]' id='sgst1' style='width:120px; text-align:right' /></td>
+                            <td><input type='text' name='igst[]' id='igst1' style='width:120px; text-align:right' /></td>
+                            <td style='padding-left:10px'><input type='checkbox' name='check[]' id='check1' ></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table width="837px" style="margin-top:50px;">
+                	<tr>
+                    	<td align="right"><input type="submit" id="submit" value="Add Item" class="btn btn-primary" /></td>
+                    </tr>
+                </table>
+        </form>
+	</body>
+</html>
